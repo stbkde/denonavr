@@ -22,7 +22,6 @@ HTTP_TELNET_CMD = "/goform/formiPhoneAppDirect.xml?{telnetcmd}"
 MAX_VOLUME = 50
 _LOGGER = logging.getLogger(__name__)
 
-
 def Connect(ip, zone="MAIN+ZONE"):
     """
     Returns a instance of Zone
@@ -73,6 +72,9 @@ class Zone():
             r = requests.get(url)
             # _LOGGER.debug("Recieve")
             # _LOGGER.debug(r.text)
+            if str(r.text).find("403"):
+                _LOGGER.error("Access Forbidden")
+                return False
         except requests.exceptions.RequestException as e:
             _LOGGER.error("Unable to fetch the status from {}".format(self.ip))
             _LOGGER.debug("requests.exceptions.RequestException: {}".format(e))
@@ -113,6 +115,9 @@ class Zone():
             r = requests.get(url)
             # _LOGGER.debug("Recieve")
             # _LOGGER.debug(r.text)
+            if str(r.text).find("403"):
+                _LOGGER.error("Access Forbidden")
+                return False
         except requests.exceptions.RequestException as e:
             _LOGGER.error(
                 "Unable to fetch the status from {}:".format(self.ip)
